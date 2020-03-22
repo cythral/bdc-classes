@@ -1,0 +1,33 @@
+version: '3.7'
+
+services:
+  api:
+    build:
+      context: .
+      target: development
+    depends_on:
+      - mysql
+    volumes:
+      - ./src:/app
+    ports:
+      - 80:80
+    environment: 
+      - DB_NAME
+      - DB_USER
+      - DB_HOST=mysql
+      - DB_PASSWORD
+      - SVC_USERNAME
+      - SVC_PASSWORD
+  
+  mysql:
+    image: mariadb/server:10.3
+    volumes:
+      - data-store:/var/lib/mysql
+    environment:
+      - MARIADB_DATABASE=${DB_NAME}
+      - MARIADB_RANDOM_ROOT_PASSWORD=1
+      - MARIADB_USER=${DB_USER}
+      - MARIADB_PASSWORD=${DB_PASSWORD}
+
+volumes:
+  data-store:
