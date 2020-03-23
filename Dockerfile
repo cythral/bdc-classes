@@ -10,5 +10,6 @@ FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app
 COPY --from=development /app/out .
 COPY entrypoint.sh /
+RUN chmod +x /entrypoint.sh
 EXPOSE 80
 ENTRYPOINT /entrypoint.sh
