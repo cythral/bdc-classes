@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using BrekkeDanceCenter.Classes.Entities;
 using BrekkeDanceCenter.Classes.Authentication;
 
@@ -17,7 +18,7 @@ namespace BrekkeDanceCenter.Classes.Controllers {
         [HttpGet]
         [Authenticate]
         public ActionResult<IEnumerable<Course>> ListCourses() {
-            var courses = databaseContext.Courses.AsEnumerable();
+            var courses = databaseContext.Courses.Include(course => course.Classes).ToList();
             return new ActionResult<IEnumerable<Course>>(courses);
         }
     }
