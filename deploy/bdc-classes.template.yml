@@ -100,7 +100,7 @@ Resources:
           Environment:
             - Name: SVC_USERNAME
               Value: !Ref ServiceUsername
-            - Name: ENCRYPTED_SVC_USERNAME
+            - Name: ENCRYPTED_SVC_PASSWORD
               Value: !Ref ServicePassword
             - Name: DB_HOST
               Value: !ImportValue mutedac:ClusterAddress
