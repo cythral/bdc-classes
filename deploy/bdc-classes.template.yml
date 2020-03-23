@@ -50,6 +50,11 @@ Resources:
       VpcId: !ImportValue cfn-utilities:VpcId
       Protocol: HTTP
       Port: 80
+      HealthCheckPath: /healthcheck
+      HealthCheckIntervalSeconds: 10
+      HealthCheckTimeoutSeconds: 5
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 5
       
   Service:
     Type: AWS::ECS::Service
