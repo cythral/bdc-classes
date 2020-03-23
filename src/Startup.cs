@@ -29,6 +29,7 @@ namespace BrekkeDanceCenter.Classes
         {
             services.AddControllers();
             ConfigureDatabase(services);
+            ConfigureCors(services);
         }
 
         public void ConfigureDatabase(IServiceCollection services)
@@ -41,6 +42,18 @@ namespace BrekkeDanceCenter.Classes
             services.AddDbContextPool<DatabaseContext>(options =>
                 options.UseMySql($"Server={host};Database={database};User={username};Password=\"{password}\"")
             );
+        }
+
+        public void ConfigureCors(IServiceCollection services)
+        {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("origins",
+                builder =>
+                {
+                    builder.WithOrigins("https://online.brekkedancecenter.com");
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
