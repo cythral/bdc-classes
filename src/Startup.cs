@@ -36,7 +36,7 @@ namespace BrekkeDanceCenter.Classes
             string host = Environment.GetEnvironmentVariable("DB_HOST");
             string database = Environment.GetEnvironmentVariable("DB_NAME");
             string username = Environment.GetEnvironmentVariable("DB_USER");
-            string password = Environment.GetEnvironmentVariable("DB_PASSWORD");
+            string password = Environment.GetEnvironmentVariable("DB_PASSWORD").Replace(";", "\\;");
 
             services.AddDbContextPool<DatabaseContext>(options =>
                 options.UseMySql($"Server={host};Database={database};User={username};Password={password}")
