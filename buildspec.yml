@@ -1,0 +1,26 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      docker: 18
+    commands:
+      - pip install cfn-lint
+
+  pre_build:
+    commands:
+      - $(aws ecr get-login --no-include-email)
+      - export IMAGE="$REPOSITORY_URI:$CODEBUILD_BUILD_NUMBER"
+  
+  build:
+    commands:
+      - cfn-lint deploy/bdc-classes.template.yml
+      - deploy/create-config-files.sh $IMAGE
+      
+      - docker build -t $IMAGE .
+      - docker push $IMAGE
+
+artifacts:
+  discard-paths: yes
+  files:
+    - "deploy/bdc-classes.template.yml"
+    - "bdc-classes.*.config.json"

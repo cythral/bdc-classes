@@ -1,0 +1,151 @@
+Description: Hello World using Docker, ECS, and CFN
+Parameters:
+  Image:
+    Type: String
+    Description: Docker Image uri to pull
+
+  DomainName:
+    Type: String
+    Description: Hello world domain name to use
+
+  ServiceUsername:
+    Type: String
+    Description: Username to use when connecting to the BDC Classes Service
+  
+  ServicePassword:
+    Type: String
+    Description: Password to use when connecting to the BDC Classes Service
+
+  Database:
+    Type: String
+    Description: Name of the database to use
+
+  DatabaseUsername:
+    Type: String
+    Description: Username to use when connecting to the database
+
+  DatabasePassword:
+    Type: String
+    Description: Password to use when connecting to the database
+
+Resources:
+  ListenerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      ListenerArn: !ImportValue cfn-utilities:HttpListenerArn
+      Priority: 2
+      Actions:
+        - Type: forward
+          TargetGroupArn: !Ref TargetGroup
+      Conditions:
+        - Field: host-header
+          HostHeaderConfig:
+            Values:
+              - !Ref DomainName
+
+  TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      TargetType: ip
+      VpcId: !ImportValue cfn-utilities:VpcId
+      Protocol: HTTP
+      Port: 80
+      
+  Service:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster: !ImportValue bdc-infrastructure:ClusterName
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          Subnets: !Split
+            - ","
+            - !ImportValue cfn-utilities:SubnetIds
+          SecurityGroups:
+            - !ImportValue cfn-utilities:WebSecurityGroupId
+          AssignPublicIp: ENABLED
+      LoadBalancers:
+        - ContainerName: bdc-classes
+          ContainerPort: 80
+          TargetGroupArn: !Ref TargetGroup
+      TaskDefinition: !Ref TaskDefinition
+      DesiredCount: 1
+      DeploymentConfiguration:
+        MinimumHealthyPercent: 1
+        MaximumPercent: 200
+
+  TaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Cpu: 256
+      Memory: 512
+      NetworkMode: awsvpc
+      ExecutionRoleArn: !GetAtt TaskRole.Arn
+      TaskRoleArn: !GetAtt TaskRole.Arn
+      RequiresCompatibilities:
+        - FARGATE
+      ContainerDefinitions:
+        - Name: bdc-classes
+          Essential: true
+          Image: !Ref Image
+          PortMappings:
+            - ContainerPort: 80
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group: !Ref LogGroup
+              awslogs-region: !Ref AWS::Region
+              awslogs-stream-prefix: !Ref AWS::StackName
+          Environment:
+            - Name: SVC_USERNAME
+              Value: !Ref ServiceUsername
+            - Name: ENCRYPTED_SVC_USERNAME
+              Value: !Ref ServicePassword
+            - Name: DB_HOST
+              Value: !ImportValue mutedac:ClusterAddress
+            - Name: DB_NAME
+              Value: !Ref Database
+            - Name: DB_USER
+              Value: !Ref DatabaseUsername
+            - Name: ENCRYPTED_DB_PASSWORD
+              Value: !Ref DatabasePassword
+
+  TaskRole:
+    Type: AWS::IAM::Role
+    Properties:
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
+        - arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action: sts:AssumeRole
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+
+  LogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      RetentionInDays: 14
+
+  ScalingConfiguration:
+    Type: AWS::ApplicationAutoScaling::ScalableTarget
+    Properties:
+      MaxCapacity: 1
+      MinCapacity: 0
+      ScheduledActions:
+        # Everyday at 7pm CST
+        - ScheduledActionName: Down
+          StartTime: '2019-11-14T00:00:00Z'
+          EndTime: '2999-01-03T00:00:00Z'
+          ScalableTargetAction:
+            MaxCapacity: 0
+            MinCapacity: 0
+          Schedule: cron(0 1 * * ? *)
+      ResourceId: !Sub 
+        - service/${Cluster}/${Service.Name}
+        - Cluster: !ImportValue bdc-infrastructure:ClusterName
+      RoleARN: !Sub arn:aws:iam::${AWS::AccountId}:role/aws-service-role/ecs.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_ECSService 
+      ScalableDimension: ecs:service:DesiredCount
+      ServiceNamespace: ecs
