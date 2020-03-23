@@ -7,8 +7,8 @@ for file in $(ls ${cwd}/params/*.json); do
     envName=$(echo $file | xargs basename | sed "s/\.json//")
     params=$(cat $file)
     params=$(echo $params | jq ".Image=\"$image\"")
-    
+
     config={}
     config=$(echo $config | jq --argjson params "$params" '.Parameters=$params')
-    echo $config > bdc-infrastructure.${envName}.config.json
+    echo $config > bdc-classes.${envName}.config.json
 done
