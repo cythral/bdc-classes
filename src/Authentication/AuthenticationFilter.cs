@@ -24,7 +24,7 @@ namespace BrekkeDanceCenter.Classes.Authentication {
 
             var usernameLength = Math.Max(parameter.IndexOf(":"), 0);
             var username = parameter.Substring(0, usernameLength);
-            var password = parameter.Substring(usernameLength + 1);
+            var password = usernameLength > 0 ? parameter.Substring(usernameLength + 1) : "";
 
             if(username != expectedUsername || password != expectedPassword) {
                 ReturnUnauthorized(context);
