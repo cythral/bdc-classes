@@ -65,7 +65,7 @@ Resources:
             - !ImportValue cfn-utilities:WebSecurityGroupId
           AssignPublicIp: ENABLED
       LoadBalancers:
-        - ContainerName: bdc-classes
+        - ContainerName: primary
           ContainerPort: 80
           TargetGroupArn: !Ref TargetGroup
       TaskDefinition: !Ref TaskDefinition
@@ -77,6 +77,7 @@ Resources:
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
+      Family: bdc-classes
       Cpu: 256
       Memory: 512
       NetworkMode: awsvpc
@@ -85,7 +86,7 @@ Resources:
       RequiresCompatibilities:
         - FARGATE
       ContainerDefinitions:
-        - Name: bdc-classes
+        - Name: primary
           Essential: true
           Image: !Ref Image
           PortMappings:
