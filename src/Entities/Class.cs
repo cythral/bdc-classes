@@ -6,6 +6,7 @@ namespace BrekkeDanceCenter.Classes.Entities {
     public class Class {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [JsonPropertyName("id")]
         public long ClassId { get; set; }
 
         [ForeignKey("CourseId")]
@@ -14,6 +15,7 @@ namespace BrekkeDanceCenter.Classes.Entities {
 
         public string Name { get; set; }
 
+        [JsonPropertyName("youtube_id")]
         public string YoutubeId { get; set; } 
     }
 }
