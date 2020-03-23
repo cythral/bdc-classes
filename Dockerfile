@@ -13,7 +13,7 @@ COPY entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 RUN  \
 apt-get update && \
-apt-get install python3 python3-pip && \
+apt-get install -y python3 python3-pip && \
 pip install awscli
 EXPOSE 80
 ENTRYPOINT /entrypoint.sh
