@@ -51,7 +51,9 @@ namespace BrekkeDanceCenter.Classes
                 options.AddPolicy("origins",
                 builder =>
                 {
-                    builder.WithOrigins("https://online.brekkedancecenter.com");
+                    builder.WithOrigins("https://online.brekkedancecenter.com", "https://online.dev.brekkedancecenter.com");
+                    builder.WithMethods("GET", "HEAD");
+                    builder.WithHeaders("Authorization");
                 });
             });
         }
@@ -60,6 +62,7 @@ namespace BrekkeDanceCenter.Classes
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DatabaseContext dbContext)
         {
             dbContext.Database.Migrate();
+            app.UseCors("origins");
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
