@@ -135,24 +135,3 @@ Resources:
     Type: AWS::Logs::LogGroup
     Properties:
       RetentionInDays: 14
-
-  ScalingConfiguration:
-    Type: AWS::ApplicationAutoScaling::ScalableTarget
-    Properties:
-      MaxCapacity: 1
-      MinCapacity: 0
-      ScheduledActions:
-        # Everyday at 7pm CST
-        - ScheduledActionName: Down
-          StartTime: '2019-11-14T00:00:00Z'
-          EndTime: '2999-01-03T00:00:00Z'
-          ScalableTargetAction:
-            MaxCapacity: 0
-            MinCapacity: 0
-          Schedule: cron(0 1 * * ? *)
-      ResourceId: !Sub 
-        - service/${Cluster}/${Service.Name}
-        - Cluster: !ImportValue bdc-infrastructure:ClusterName
-      RoleARN: !Sub arn:aws:iam::${AWS::AccountId}:role/aws-service-role/ecs.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_ECSService 
-      ScalableDimension: ecs:service:DesiredCount
-      ServiceNamespace: ecs
