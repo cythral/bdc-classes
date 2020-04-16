@@ -8,7 +8,6 @@ for file in $(ls ${cwd}/params/*.json); do
     params=$(cat $file)
     params=$(echo $params | jq ".Image=\"$image\"")
 
-    config={}
-    config=$(echo $config | jq --argjson params "$params" '.Parameters=$params')
+    config=$(cat $cwd/config.json | jq --argjson params "$params" '.Parameters=$params')
     echo $config > bdc-classes.${envName}.config.json
 done

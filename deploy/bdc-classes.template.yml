@@ -1,4 +1,4 @@
-Description: Hello World using Docker, ECS, and CFN
+Description: Brekke Dance Center Classes Microservice
 Parameters:
   Image:
     Type: String
@@ -6,7 +6,7 @@ Parameters:
 
   DomainName:
     Type: String
-    Description: Hello world domain name to use
+    Description: Domain name to use for BDC Classes
 
   ServiceUsername:
     Type: String
