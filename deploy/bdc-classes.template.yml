@@ -27,7 +27,7 @@ Parameters:
   DatabasePassword:
     Type: String
     Description: Password to use when connecting to the database
-
+  
 Resources:
   ListenerRule:
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
@@ -61,6 +61,7 @@ Resources:
     Properties:
       Cluster: !ImportValue bdc-infrastructure:ClusterName
       LaunchType: FARGATE
+      EnableECSManagedTags: true
       NetworkConfiguration:
         AwsvpcConfiguration:
           Subnets: !Split
