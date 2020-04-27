@@ -62,6 +62,7 @@ Resources:
       Cluster: !ImportValue bdc-infrastructure:ClusterName
       LaunchType: FARGATE
       EnableECSManagedTags: true
+      PropagateTags: TASK_DEFINITION
       NetworkConfiguration:
         AwsvpcConfiguration:
           Subnets: !Split
