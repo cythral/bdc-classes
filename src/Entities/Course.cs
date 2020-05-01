@@ -10,6 +10,8 @@ namespace BrekkeDanceCenter.Classes.Entities {
 
         public string Name { get; set; }
 
+        public string LiveLink { get; set; }
+
         public ICollection<Class> Classes { get; set; }
     }
 }
