@@ -17,5 +17,8 @@ namespace BrekkeDanceCenter.Classes.Entities {
 
         [JsonPropertyName("youtube_id")]
         public string YoutubeId { get; set; } 
+
+        [JsonPropertyName("live_link")]
+        public string LiveLink { get; set; }
     }
 }
