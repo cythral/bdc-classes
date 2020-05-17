@@ -3,6 +3,7 @@ Parameters:
   GithubToken:
     Type: String
     NoEcho: true
+    Default: ""
     Description: OAuth token for the Github organization.  Needs read/write access to repos and repo hooks
 
   GithubOwner:
@@ -15,6 +16,7 @@ Parameters:
 
   GithubBranch:
     Type: String
+    Default: ""
     Description: Name of the github branch to track
 
 Resources:
