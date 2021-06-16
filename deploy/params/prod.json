@@ -1,8 +1,10 @@
 {
-    "DomainName": "classes.brekkedancecenter.com",
-    "Database": "bdc",
-    "DatabaseUsername": "bdc-classes",
-    "DatabasePassword": "AQICAHg8qW+D5mdBsqfSIPEWS/dkUEL0XX9SCaLC/GQkJO8hBgELpVMGNQxiwxGHhIe0d7RaAAAAcjBwBgkqhkiG9w0BBwagYzBhAgEAMFwGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMKOglpWXrjeFdWoKYAgEQgC9DoRbh6MKD7eep4xmnaQjE36uz/skhsS+LkMOY1q/1BqeINIuHbdLAl1E8VZHCJA==",
-    "ServiceUsername": "bdc",
-    "ServicePassword": "AQICAHg8qW+D5mdBsqfSIPEWS/dkUEL0XX9SCaLC/GQkJO8hBgG1EBoCKUdZ8bGHiECozBg4AAAAZzBlBgkqhkiG9w0BBwagWDBWAgEAMFEGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM5nStflncv+SHuRbgAgEQgCRuaKEKNOw/zlUQN/2r58kWcMioUpdCqfq1uO3b7wId1Y5mhlk="
+  "DomainName": "classes.brekkedancecenter.com",
+  "Database": "bdc",
+  "DatabaseUsername": "bdc-classes",
+  "DatabasePassword": "AQICAHg8qW+D5mdBsqfSIPEWS/dkUEL0XX9SCaLC/GQkJO8hBgELpVMGNQxiwxGHhIe0d7RaAAAAcjBwBgkqhkiG9w0BBwagYzBhAgEAMFwGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMKOglpWXrjeFdWoKYAgEQgC9DoRbh6MKD7eep4xmnaQjE36uz/skhsS+LkMOY1q/1BqeINIuHbdLAl1E8VZHCJA==",
+  "ServiceUsername": "bdc",
+  "ServicePassword": "AQICAHg8qW+D5mdBsqfSIPEWS/dkUEL0XX9SCaLC/GQkJO8hBgG1EBoCKUdZ8bGHiECozBg4AAAAZzBlBgkqhkiG9w0BBwagWDBWAgEAMFEGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM5nStflncv+SHuRbgAgEQgCRuaKEKNOw/zlUQN/2r58kWcMioUpdCqfq1uO3b7wId1Y5mhlk=",
+  "EnvoyImage": "840364872350.dkr.ecr.us-east-1.amazonaws.com/aws-appmesh-envoy:v1.17.2.0-prod",
+  "MeshNodeName": "bdc-classes-prod"
 }
